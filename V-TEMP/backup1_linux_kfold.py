@@ -388,6 +388,7 @@ def get_mp4_files(video_dir):
     files = [fname for fname in allfiles if fname.endswith('.mp4')]
     print(files)
     print(len(files))
+    filenames_list = []
     return files
 
 
@@ -620,7 +621,7 @@ def folder_eval(file_list, y_true_list, frames, landmark, threshold, padding, co
         # print(filename_split)         ############ Print Original
         # if filename_split == 'Video21':
         final_temps.append((temp_test_main(filename_split, total_frames = int(frames), landmark_num = int(landmark), frame_limit='Limit', component = 2, pixel_padding = int(padding), colorspace = ['RGB', 'LAB', 'HSV', 'YCrCb'], colospace_component = [str(colorspace_comp)])))     
-        filenames_list.append((filename_split))
+        # filenames_list.append((filename_split))
     print(final_temps)
 
     # threshold_range = np.linspace(299.5, 300, 1)
