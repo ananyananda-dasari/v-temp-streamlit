@@ -139,6 +139,7 @@ def temp_test_main(filename, total_frames, landmark_num, frame_limit, component,
         mat = scipy.io.loadmat(matfilename)
         mat = {k:v for k, v in mat.items() if k[0] != '_'}
         data_2d = pd.DataFrame({k: v[0] for k, v in mat.items()})
+        # videofilename = vid_dir + filename + '.mp4'
         videofilename = vid_dir + filename + '.mp4'
         cap = cv2.VideoCapture(videofilename) 
         fps = cap.get(cv2.CAP_PROP_FPS) 

@@ -26,10 +26,11 @@ def run_main(input_path, mat_path, csv_data):
     for videoname in videonames:
         vidpath = os.path.join(input_path, videoname)
         print(f'Processed: {vidpath}')
+        vid_name_w_ext = os.path.splitext(videoname)[0]
 
         print('Analyzing subject skin temperature')
         threshold = 300.5
-        status = temp_test_main(videoname, total_frames=100, landmark_num=9, frame_limit='Limit', component='B', pixel_padding=5, colorspace='RGB', colospace_component='B')
+        status = temp_test_main(vid_name_w_ext, total_frames=100, landmark_num=9, frame_limit='Limit', component='B', pixel_padding=5, colorspace='RGB', colospace_component='B')
         final_temps = np.asarray(status)
         # print(np.shape(final_temps))
         pred_scores = final_temps
