@@ -1,17 +1,15 @@
 import os
-# import cv2
 import streamlit as st
-# from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, WebRtcMode
-# import av
 import tempfile
 import time
-from main_temp import *
+from main_temp import *  # Assuming this contains the function for fever detection
 
 # Define paths
 INPUT_VID_DIR = 'V-TEMP/Input_Videos/'
 MAT_PATH = 'V-TEMP/Mat_Files/'
 CSV_DATA = 'V-TEMP/Input_Data/test.csv'
 
+# Create directories if they don't exist
 os.makedirs(INPUT_VID_DIR, exist_ok=True)
 os.makedirs(MAT_PATH, exist_ok=True)
 
@@ -22,6 +20,8 @@ if 'video_recorded_path' not in st.session_state:
     st.session_state.video_recorded_path = None
 if 'recorded_frames' not in st.session_state:
     st.session_state.recorded_frames = []
+if 'mat_file_path' not in st.session_state:
+    st.session_state.mat_file_path = None  # Store the generated .mat file path
 
 st.title("🌡️ V-TEMP: Video-based detection of elevated skin temperature")
 
@@ -59,15 +59,28 @@ if video_to_process:
     if st.button("Run Fever Detection"):
         with st.spinner("Processing video and analyzing skin temperature..."):
             try:
-                # Ensure the video path is available for your backend logic
-                # If run_main expects INPUT_VID_DIR, make sure it looks inside it
+                # Process the video and generate .mat files
                 state_temp = run_main(INPUT_VID_DIR, MAT_PATH, CSV_DATA)
                 st.success(state_temp)
-                if state_temp[0] == 0:
-                    st.success('Skin temperature within normal range. No sign of fever detected')
-                if state_temp[0] == 1:
-                    st.success('Skin temperature is elevated. Fever detected.')
-                st.success("Fever detection completed successfully.")
+                
+                # Assuming run_main generates and saves the .mat file in MAT_PATH
+                mat_filename = f"{os.path.splitext(os.path.basename(video_to_process))[0]}_fit.mat"
+                mat_file_path = os.path.join(MAT_PATH, mat_filename)
+
+                # Check if the .mat file is generated and stored
+                if os.path.exists(mat_file_path):
+                    st.session_state.mat_file_path = mat_file_path
+                    st.success(f"Generated .mat file: {mat_file_path}")
+
+                    # Proceed with fever detection logic
+                    if state_temp[0] == 0:
+                        st.success('Skin temperature within normal range. No sign of fever detected.')
+                    if state_temp[0] == 1:
+                        st.success('Skin temperature is elevated. Fever detected.')
+                    st.success("Fever detection completed successfully.")
+                else:
+                    st.error(f"Error: {mat_file_path} not found after processing video.")
+
             except Exception as e:
                 st.error(f"Error during fever detection: {e}")
 else:
