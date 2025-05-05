@@ -367,15 +367,28 @@ def temp_test_main(filename, total_frames, landmark_num, frame_limit, component,
 # dir = r'/media/newhd/Sakthi/Gates/Temperature/PR_Testing'
 # dir = r'/media/sakthi/4 TB Hard Drive/Sakthi/Gates/Temperature/Edited_Videos_Rotated/'       ################### Linux
 
-dir = r'/tmp/Input_Videos/'       ################### Linux
+# **********
 
-# dir = r'D:\CMU\BMGF\Temp_Test\3d-facial-landmark-detection-and-tracking-master\3d-facial-landmark-detection-and-tracking-master\NoFeverTest'
+# dir = r'/tmp/Input_Videos/'       ################### Linux
 
-allfiles = sorted(os.listdir(dir))
-files = [fname for fname in allfiles if fname.endswith('.mp4')]
-print(files)
-print(len(files))
-filenames_list = []
+# # dir = r'D:\CMU\BMGF\Temp_Test\3d-facial-landmark-detection-and-tracking-master\3d-facial-landmark-detection-and-tracking-master\NoFeverTest'
+
+# allfiles = sorted(os.listdir(dir))
+# files = [fname for fname in allfiles if fname.endswith('.mp4')]
+# print(files)
+# print(len(files))
+# filenames_list = []
+
+
+import os
+
+def get_mp4_files(video_dir):
+    os.makedirs(video_dir, exist_ok=True)  # Ensure the folder exists
+    allfiles = sorted(os.listdir(video_dir))
+    files = [fname for fname in allfiles if fname.endswith('.mp4')]
+    print(files)
+    print(len(files))
+    return files
 
 
 def randomizer(file_names, sample_size):
@@ -685,7 +698,7 @@ def kfold(files_folder, y_true):
     print(np.std(f1_score_folder))
     return np.mean(f1_score_folder)
         
-def main(experiment_status, experiment):
+def main(experiment_status, experiment, inp_vid_dir):
     if experiment_status == True:
         f1_rand = []
         for random_iter in tqdm(range(0, 1)):
@@ -757,6 +770,7 @@ def main(experiment_status, experiment):
         # y_true = [1]*len(files)
         # y_true = [0, 0, 0, 0, 1, 1, 1, 1]
         # landmarkarray = np.squeeze(np.arange(1, 512, 1))
+        files = get_mp4_files(inp_vid_dir)
         f1_score_folder = folder_eval(file_list = files, y_true_list = y_true, frames=100, landmark=9, threshold=300.5, padding=5, colorspace_comp='B')
         # print(f1_score_folder[1])
         return f1_score_folder[1]

@@ -28,7 +28,7 @@ def run_main(input_path, mat_path, csv_data):
         print(f'Processed: {vidpath}')
 
     print('Analyzing subject skin temperature')
-    status = main(experiment_status=False, experiment='Landmark')
+    status = main(experiment_status=False, experiment='Landmark', inp_vid_dir=input_path)
 
     return status
 

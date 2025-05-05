@@ -6,6 +6,8 @@ import streamlit as st
 import tempfile
 import time
 from main_temp import *
+# from backup1_linux_kfold import get_mp4_files
+
 
 # Define paths
 INPUT_VID_DIR = '/tmp/Input_Videos/'
@@ -52,6 +54,8 @@ if uploaded_file is not None:
 
 # Fever detection
 st.header("Step 2: Run Fever Detection")
+
+# files = get_mp4_files(INPUT_VID_DIR)
 
 video_to_process = st.session_state.video_uploaded_path or st.session_state.video_recorded_path
 if video_to_process:
