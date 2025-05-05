@@ -1,8 +1,8 @@
 import os
-import cv2
+# import cv2
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, WebRtcMode
-import av
+# from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, WebRtcMode
+# import av
 import tempfile
 import time
 from main_temp import *
