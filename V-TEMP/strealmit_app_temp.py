@@ -30,81 +30,12 @@ st.header("Step 1: Provide a video")
 # Upload a video
 uploaded_file = st.file_uploader("Upload a video (MP4 only):", type=['mp4'])
 if uploaded_file is not None:
-    video_path = os.path.join(INPUT_VID_DIR, uploaded_file.name)
-    with open(video_path, 'wb') as f:
+    # Save file to a fixed known path in INPUT_VID_DIR
+    temp_file_path = os.path.join(INPUT_VID_DIR, uploaded_file.name)
+    with open(temp_file_path, 'wb') as f:
         f.write(uploaded_file.read())
-    st.session_state.video_uploaded_path = video_path
-    st.success(f"Video uploaded and saved to {video_path}")
-
-# # Webcam recording
-# st.markdown("---")
-# st.subheader("Or record a video using your webcam")
-
-# class VideoRecorder(VideoTransformerBase):
-#     def __init__(self):
-#         self.frames = []
-#         self.is_recording = False
-#         self.out = None
-#         self.recording_start_time = None
-
-#     def start_recording(self):
-#         """Starts recording frames"""
-#         self.frames = []  # Reset frames when starting a new recording
-#         self.is_recording = True
-#         self.recording_start_time = time.time()
-#         st.session_state.recorded_frames = self.frames  # Store in session state
-#         st.info("Recording started...")
-
-#     def stop_recording(self):
-#         """Stops the recording and saves the video"""
-#         self.is_recording = False
-#         if self.frames:
-#             h, w, _ = self.frames[0].shape
-#             out_path = os.path.join(INPUT_VID_DIR, "recorded_video.mp4")
-#             self.out = cv2.VideoWriter(out_path, cv2.VideoWriter_fourcc(*'mp4v'), 15, (w, h))
-#             for frame in self.frames:
-#                 self.out.write(frame)
-#             self.out.release()
-#             st.session_state.video_recorded_path = out_path
-#             st.session_state.recorded_frames = []  # Clear frames after saving
-#             st.success(f"Video recorded and saved to {out_path}")
-#             return out_path
-#         else:
-#             st.warning("Recording stopped but no frames were captured.")
-#             return None
-
-#     def transform(self, frame: av.VideoFrame) -> av.VideoFrame:
-#         """Handles video frames and captures them during the recording"""
-#         if self.is_recording:
-#             img = frame.to_ndarray(format="bgr24")
-#             self.frames.append(img)
-#         return av.VideoFrame.from_ndarray(frame.to_ndarray(format="bgr24"), format="bgr24")
-
-# video_recorder = VideoRecorder()
-
-# # Streamer and video capture
-# webrtc_ctx = webrtc_streamer(
-#     key="record",
-#     mode=WebRtcMode.SENDRECV,
-#     video_processor_factory=lambda: video_recorder,
-#     media_stream_constraints={"video": True, "audio": False},
-#     async_processing=False,
-# )
-
-# # Start Recording Button
-# if st.button("Start Recording"):
-#     video_recorder.start_recording()
-
-# # Stop Recording Button
-# if st.button("Stop and Save Recording"):
-#     recorded_video_path = video_recorder.stop_recording()
-#     if recorded_video_path:
-#         # Preview recorded video
-#         st.video(recorded_video_path)
-#     else:
-#         st.warning("No frames were recorded.")
-
-# st.markdown("---")
+    st.session_state.video_uploaded_path = temp_file_path
+    st.success(f"Video uploaded and saved to {temp_file_path}")
 
 # Fever detection
 st.header("Step 2: Run Fever Detection")
@@ -115,13 +46,14 @@ if video_to_process:
     if st.button("Run Fever Detection"):
         with st.spinner("Processing video and analyzing skin temperature..."):
             try:
+                # Ensure the video path is available for your backend logic
+                # If run_main expects INPUT_VID_DIR, make sure it looks inside it
                 state_temp = run_main(INPUT_VID_DIR, MAT_PATH, CSV_DATA)
                 if state_temp[0] == 0:
                     st.success('Skin temperature within normal range. No sign of fever detected')
                 if state_temp[0] == 1:
                     st.success('Skin temperature is elevated. Fever detected.')
                 st.success("Fever detection completed successfully.")
-
             except Exception as e:
                 st.error(f"Error during fever detection: {e}")
 else:
