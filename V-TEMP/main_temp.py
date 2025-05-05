@@ -27,8 +27,8 @@ def run_main(input_path, mat_path, csv_data):
         vidpath = os.path.join(input_path, videoname)
         print(f'Processed: {vidpath}')
 
-    print('Analyzing subject skin temperature')
-    status = main(experiment_status=False, experiment='Landmark', inp_vid_dir=input_path)
+        print('Analyzing subject skin temperature')
+        status = temp_test_main(videoname, total_frames=100, landmark_num=9, frame_limit='Limit', component='B', pixel_padding=5, colorspace='RGB', colospace_component='B'):
 
     return status
 
