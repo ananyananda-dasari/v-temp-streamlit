@@ -17,11 +17,15 @@ def run_main(input_path, mat_path, csv_data):
     if not videonames:
         raise ValueError("No MP4 video files found in the input folder.")
 
+    print('Identifying Face and Obtaining Facial Landmarks')
+    process_all_videos(input_path, mat_path)  # <-- call once here
+
+    saved_files = [f for f in os.listdir(mat_path) if f.endswith('.mat')]
+    print(f'Saved {len(saved_files)} .mat files to {mat_path}')
+
     for videoname in videonames:
         vidpath = os.path.join(input_path, videoname)
-        print(f'Processing: {vidpath}')
-        print('Identifying Face and Obtaining Facial Landmarks')
-        process_all_videos(input_path, mat_path)
+        print(f'Processed: {vidpath}')
 
     print('Analyzing subject skin temperature')
     status = main(experiment_status=False, experiment='Landmark')
