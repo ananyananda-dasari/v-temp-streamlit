@@ -608,7 +608,7 @@ def folder_eval(file_list, y_true_list, frames, landmark, threshold, padding, co
         # if filename_split == 'Video21':
         final_temps.append((temp_test_main(filename_split, total_frames = int(frames), landmark_num = int(landmark), frame_limit='Limit', component = 2, pixel_padding = int(padding), colorspace = ['RGB', 'LAB', 'HSV', 'YCrCb'], colospace_component = [str(colorspace_comp)])))     
         filenames_list.append((filename_split))
-    # print(final_temps)
+    print(final_temps)
 
     # threshold_range = np.linspace(299.5, 300, 1)
     # for threshold in threshold_range:
@@ -620,7 +620,7 @@ def folder_eval(file_list, y_true_list, frames, landmark, threshold, padding, co
 
     y_pred = [1 if score >= threshold else 0 for score in pred_scores]
     # print(np.shape(y_pred))
-    # print(y_pred)
+    print(y_pred)
 
 
     # average_precision = average_precision_score(y_true_list, y_pred)
