@@ -28,9 +28,14 @@ def run_main(input_path, mat_path, csv_data):
         print(f'Processed: {vidpath}')
 
         print('Analyzing subject skin temperature')
+        threshold = 300.5
         status = temp_test_main(videoname, total_frames=100, landmark_num=9, frame_limit='Limit', component='B', pixel_padding=5, colorspace='RGB', colospace_component='B')
+        final_temps = np.asarray(status)
+        # print(np.shape(final_temps))
+        pred_scores = final_temps
 
-    return status
+        y_pred = [1 if score >= threshold else 0 for score in pred_scores]
+    return y_pred
 
 # def run_main(input_path, mat_path, csv_data):
 #     for root,dirs,files in os.walk(input_path):

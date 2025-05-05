@@ -69,9 +69,9 @@ if video_to_process:
                 # If run_main expects INPUT_VID_DIR, make sure it looks inside it
                 state_temp = run_main(INPUT_VID_DIR, MAT_PATH, CSV_DATA)
                 st.success(state_temp)
-                if state_temp[0] == 0:
+                if state_temp == 0:
                     st.success('Skin temperature within normal range. No sign of fever detected')
-                if state_temp[0] == 1:
+                if state_temp == 1:
                     st.success('Skin temperature is elevated. Fever detected.')
                 st.success("Fever detection completed successfully.")
             except Exception as e:
