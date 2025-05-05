@@ -138,6 +138,6 @@ def process_all_videos(input_folder, output_folder):
 
 # Example usage
 # Replace 'Videos' with your actual input folder
-input_folder = './Input_Videos'
-output_folder = './Mat_Files'
-process_all_videos(input_folder, output_folder)
+# input_folder = 'V-TEMP/Input_Videos'
+# output_folder = 'V-TEMP/Mat_Files'
+# process_all_videos(input_folder, output_folder)
