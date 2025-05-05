@@ -37,6 +37,19 @@ if uploaded_file is not None:
     st.session_state.video_uploaded_path = temp_file_path
     st.success(f"Video uploaded and saved to {temp_file_path}")
 
+if uploaded_file is not None:
+    video_path = os.path.join(INPUT_VID_DIR, uploaded_file.name)
+    with open(video_path, 'wb') as f:
+        f.write(uploaded_file.read())
+
+    if not os.path.exists(video_path):
+        st.error(f"[ERROR] Failed to save uploaded video to: {video_path}")
+    else:
+        st.success(f"Video uploaded and saved to {video_path}")
+        st.session_state.video_uploaded_path = video_path
+        st.video(video_path)  # preview
+
+
 # Fever detection
 st.header("Step 2: Run Fever Detection")
 
