@@ -28,7 +28,7 @@ def run_main(input_path, mat_path, csv_data):
         print(f'Processed: {vidpath}')
 
         print('Analyzing subject skin temperature')
-        status = temp_test_main(videoname, total_frames=100, landmark_num=9, frame_limit='Limit', component='B', pixel_padding=5, colorspace='RGB', colospace_component='B'):
+        status = temp_test_main(videoname, total_frames=100, landmark_num=9, frame_limit='Limit', component='B', pixel_padding=5, colorspace='RGB', colospace_component='B')
 
     return status
 
