@@ -2,9 +2,9 @@ from mediapipe_mat import *
 from backup1_linux_kfold import *
 
 
-input_path = 'V-TEMP/Input_Videos/'
-mat_path = 'V-TEMP/Mat_Files/'
-csv_data = 'V-TEMP/Input_Data/test.csv'
+input_path = './Input_Videos/'
+mat_path = './Mat_Files/'
+csv_data = './Input_Data/test.csv'
 
 def run_main(input_path, mat_path, csv_data):
     for root,dirs,files in os.walk(input_path):
