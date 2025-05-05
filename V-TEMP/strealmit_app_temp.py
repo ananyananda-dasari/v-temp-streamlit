@@ -8,9 +8,9 @@ import time
 from main_temp import *
 
 # Define paths
-INPUT_VID_DIR = './Input_Videos/'
-MAT_PATH = './Mat_Files/'
-CSV_DATA = './Input_Data/test.csv'
+INPUT_VID_DIR = 'V-TEMP/Input_Videos/'
+MAT_PATH = 'V-TEMP/Mat_Files/'
+CSV_DATA = 'V-TEMP/Input_Data/test.csv'
 
 os.makedirs(INPUT_VID_DIR, exist_ok=True)
 os.makedirs(MAT_PATH, exist_ok=True)
