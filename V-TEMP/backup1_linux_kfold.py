@@ -326,6 +326,7 @@ def temp_test_main(filename, total_frames, landmark_num, frame_limit, component,
         # ratio_d = ratio.to_numpy()
 
         ratio = pd.read_csv(directory_mat + 'test.csv', header=None)          ########### Linux
+        print(ratio)
         ratio_d = ratio.to_numpy()
 
         minratiodist = []
