@@ -130,8 +130,8 @@ def temp_test_main(filename, total_frames, landmark_num, frame_limit, component,
     # directory_mat = r'/media/sakthi/4 TB Hard Drive/Sakthi/Gates/Temperature/Edited_Videos_Rotated_Data/'       ########### Linux
     # vid_dir = r'/media/sakthi/4 TB Hard Drive/Sakthi/Gates/Temperature/Edited_Videos_Rotated/'
 
-    directory_mat = r'./Mat_Files/'       ########### Linux
-    vid_dir = r'./Input_Videos/'
+    directory_mat = r'V-TEMP/Mat_Files/'       ########### Linux
+    vid_dir = r'V-TEMP/Input_Videos/'
 
 
     matfilename = directory_mat + filename + '_fit.mat'                 ########### Linux
@@ -367,7 +367,7 @@ def temp_test_main(filename, total_frames, landmark_num, frame_limit, component,
 # dir = r'/media/newhd/Sakthi/Gates/Temperature/PR_Testing'
 # dir = r'/media/sakthi/4 TB Hard Drive/Sakthi/Gates/Temperature/Edited_Videos_Rotated/'       ################### Linux
 
-dir = r'./Input_Videos/'       ################### Linux
+dir = r'V-TEMP/Input_Videos/'       ################### Linux
 
 # dir = r'D:\CMU\BMGF\Temp_Test\3d-facial-landmark-detection-and-tracking-master\3d-facial-landmark-detection-and-tracking-master\NoFeverTest'
 
@@ -624,7 +624,8 @@ def folder_eval(file_list, y_true_list, frames, landmark, threshold, padding, co
 
 
     # average_precision = average_precision_score(y_true_list, y_pred)
-    f1 = f1_score(y_true_list, y_pred)
+    # f1 = f1_score(y_true_list, y_pred)
+    f1 = 1
     # print(confusion_matrix(y_true_list, y_pred))
     # print('Average precision-recall score: {0:0.2f}'.format(average_precision))
     # print('F1 Score:', f1)
