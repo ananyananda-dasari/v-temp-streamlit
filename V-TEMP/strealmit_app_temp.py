@@ -1,17 +1,27 @@
 import os
+# import cv2
 import streamlit as st
+# from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, WebRtcMode
+# import av
 import tempfile
-from main_temp import *  # Assuming this contains the function for fever detection
+import time
+from main_temp import *
 
-# Define paths relative to the Streamlit app
-MAT_PATH = '/tmp/Mat_Files/'  # Temporary directory in Streamlit environment
+# Define paths
+INPUT_VID_DIR = '/tmp/Input_Videos/'
+MAT_PATH = '/tmp/Mat_Files/'
+CSV_DATA = 'V-TEMP/Input_Data/test.csv'
+
+os.makedirs(INPUT_VID_DIR, exist_ok=True)
 os.makedirs(MAT_PATH, exist_ok=True)
 
 # Session states
 if 'video_uploaded_path' not in st.session_state:
     st.session_state.video_uploaded_path = None
-if 'mat_file_path' not in st.session_state:
-    st.session_state.mat_file_path = None  # Store the generated .mat file path
+if 'video_recorded_path' not in st.session_state:
+    st.session_state.video_recorded_path = None
+if 'recorded_frames' not in st.session_state:
+    st.session_state.recorded_frames = []
 
 st.title("🌡️ V-TEMP: Video-based detection of elevated skin temperature")
 
@@ -20,38 +30,44 @@ st.header("Step 1: Provide a video")
 # Upload a video
 uploaded_file = st.file_uploader("Upload a video (MP4 only):", type=['mp4'])
 if uploaded_file is not None:
-    # Use temporary directory to save the uploaded video
-    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-        temp_file.write(uploaded_file.read())
-        st.session_state.video_uploaded_path = temp_file.name
-        st.success(f"Video uploaded and saved to {temp_file.name}")
+    # Save file to a fixed known path in INPUT_VID_DIR
+    temp_file_path = os.path.join(INPUT_VID_DIR, uploaded_file.name)
+    with open(temp_file_path, 'wb') as f:
+        f.write(uploaded_file.read())
+    st.session_state.video_uploaded_path = temp_file_path
+    st.success(f"Video uploaded and saved to {temp_file_path}")
+
+if uploaded_file is not None:
+    video_path = os.path.join(INPUT_VID_DIR, uploaded_file.name)
+    with open(video_path, 'wb') as f:
+        f.write(uploaded_file.read())
+
+    if not os.path.exists(video_path):
+        st.error(f"[ERROR] Failed to save uploaded video to: {video_path}")
+    else:
+        st.success(f"Video uploaded and saved to {video_path}")
+        st.session_state.video_uploaded_path = video_path
+        st.video(video_path)  # preview
+
 
 # Fever detection
 st.header("Step 2: Run Fever Detection")
 
-video_to_process = st.session_state.video_uploaded_path
+video_to_process = st.session_state.video_uploaded_path or st.session_state.video_recorded_path
 if video_to_process:
     st.info(f"Video selected for processing: {video_to_process}")
     if st.button("Run Fever Detection"):
         with st.spinner("Processing video and analyzing skin temperature..."):
             try:
-                # Process the video and generate .mat files
-                state_temp = run_main('/tmp/Input_Videos/', MAT_PATH, '/tmp/Input_Data/test.csv')  # Use temporary paths
+                # Ensure the video path is available for your backend logic
+                # If run_main expects INPUT_VID_DIR, make sure it looks inside it
+                state_temp = run_main(INPUT_VID_DIR, MAT_PATH, CSV_DATA)
                 st.success(state_temp)
-                
-                # Check for .mat file and display its path
-                mat_file_path = os.path.join(MAT_PATH, "processed_video_fit.mat")
-                if os.path.exists(mat_file_path):
-                    st.session_state.mat_file_path = mat_file_path
-                    st.success(f"Generated .mat file: {mat_file_path}")
-
-                # Proceed with fever detection logic
                 if state_temp[0] == 0:
-                    st.success('Skin temperature within normal range. No sign of fever detected.')
+                    st.success('Skin temperature within normal range. No sign of fever detected')
                 if state_temp[0] == 1:
                     st.success('Skin temperature is elevated. Fever detected.')
                 st.success("Fever detection completed successfully.")
-
             except Exception as e:
                 st.error(f"Error during fever detection: {e}")
 else:
